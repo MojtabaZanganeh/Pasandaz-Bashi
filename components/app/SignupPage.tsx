@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { useAppStore } from '../../store/appStore';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAppStore } from '@/store/appStore';
 import { ArrowLeft, User, Lock, UserPlus } from 'lucide-react';
-import { useToast } from '../../hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface SignupPageProps {
   onBack: () => void;
   onLogin: () => void;
+  onSuccess: () => void;
 }
 
-export default function SignupPage({ onBack, onLogin }: SignupPageProps) {
+export default function SignupPage({ onBack, onLogin, onSuccess }: SignupPageProps) {
   const { setUser, setToken, setAuthenticated, initialSync } = useAppStore();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -86,7 +87,7 @@ export default function SignupPage({ onBack, onLogin }: SignupPageProps) {
       setToken(data.data.token);
       setAuthenticated(true);
 
-     // Initial sync - Load data from database
+      // Initial sync - Load data from database
       await initialSync();
 
       toast({
@@ -94,7 +95,8 @@ export default function SignupPage({ onBack, onLogin }: SignupPageProps) {
         description: 'حساب کاربری شما ایجاد شد',
       });
 
-      onBack();
+      // Navigate to home page
+      onSuccess();
     } catch (error) {
       console.error('Signup error:', error);
       toast({

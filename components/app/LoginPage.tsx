@@ -1,20 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { useAppStore } from '../../store/appStore';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAppStore } from '@/store/appStore';
 import { ArrowLeft, User, Lock, LogIn } from 'lucide-react';
-import { useToast } from '../../hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface LoginPageProps {
   onBack: () => void;
   onSignup: () => void;
+  onSuccess: () => void;
 }
 
-export default function LoginPage({ onBack, onSignup }: LoginPageProps) {
+export default function LoginPage({ onBack, onSignup, onSuccess }: LoginPageProps) {
   const { setUser, setToken, setAuthenticated, initialSync } = useAppStore();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -66,7 +67,8 @@ export default function LoginPage({ onBack, onSignup }: LoginPageProps) {
         description: `سلام ${data.data.user.username}!`,
       });
 
-      onBack();
+      // Navigate to home page
+      onSuccess();
     } catch (error) {
       console.error('Login error:', error);
       toast({

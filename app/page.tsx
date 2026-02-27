@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAppStore } from '../store/appStore';
-import OnboardingPage from '../components/app/OnboardingPage';
-import LoginPage from '../components/app/LoginPage';
-import SignupPage from '../components/app/SignupPage';
-import HomePage from '../components/app/HomePage';
-import SettingsPage from '../components/app/SettingsPage';
-import ReportsPage from '../components/app/ReportsPage';
-import { useToast } from '../hooks/use-toast';
+import { useAppStore } from '@/store/appStore';
+import OnboardingPage from '@/components/app/OnboardingPage';
+import LoginPage from '@/components/app/LoginPage';
+import SignupPage from '@/components/app/SignupPage';
+import HomePage from '@/components/app/HomePage';
+import SettingsPage from '@/components/app/SettingsPage';
+import ReportsPage from '@/components/app/ReportsPage';
+import { useToast } from '@/hooks/use-toast';
 
 type Page = 'onboarding' | 'login' | 'signup' | 'home' | 'settings' | 'reports';
 
@@ -22,9 +22,6 @@ export default function MainApp() {
     initialSync,
     syncPendingData,
     loadFromDatabase,
-    setUser,
-    setToken,
-    setAuthenticated,
   } = useAppStore();
 
   const [currentPage, setCurrentPage] = useState<Page | null>(null);
@@ -44,6 +41,7 @@ export default function MainApp() {
           const storedAuth = parsed.state?.isAuthenticated;
           const storedToken = parsed.state?.token;
 
+          // If onboarding has been completed before, or has income, or is logged in
           if (storedOnboarded || storedIncomes.length > 0 || (storedAuth && storedToken)) {
             setOnboarded(true);
             setCurrentPage('home');
@@ -68,7 +66,7 @@ export default function MainApp() {
     // Run after mount
     const timer = setTimeout(checkHydration, 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [setOnboarded, initialSync]);
 
   // Register service worker
   useEffect(() => {
@@ -111,6 +109,12 @@ export default function MainApp() {
     return () => window.removeEventListener('online', handleOnline);
   }, [isAuthenticated, token, syncPendingData, loadFromDatabase, toast]);
 
+  // Handle successful login - navigate to home page
+  const handleLoginSuccess = () => {
+    setOnboarded(true);
+    setCurrentPage('home');
+  };
+
   // Loading
   if (!hydrated || currentPage === null) {
     return (
@@ -141,6 +145,7 @@ export default function MainApp() {
           <LoginPage
             onBack={() => setCurrentPage('onboarding')}
             onSignup={() => setCurrentPage('signup')}
+            onSuccess={handleLoginSuccess}
           />
         );
       case 'signup':
@@ -148,6 +153,7 @@ export default function MainApp() {
           <SignupPage
             onBack={() => setCurrentPage('onboarding')}
             onLogin={() => setCurrentPage('login')}
+            onSuccess={handleLoginSuccess}
           />
         );
       case 'home':
