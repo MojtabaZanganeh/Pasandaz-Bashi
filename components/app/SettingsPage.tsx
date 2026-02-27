@@ -554,7 +554,7 @@ export default function SettingsPage({ onNavigate, onSignup }: SettingsPageProps
 
         <div className="flex items-center justify-center gap-1">
           <a
-            href="https://github.com/MojtabaZanganeh/your-repo"
+            href="https://github.com/MojtabaZanganeh/Pasandaz-Bashi"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-all"
