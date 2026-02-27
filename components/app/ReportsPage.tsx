@@ -90,30 +90,26 @@ export default function ReportsPage({ onNavigate }: ReportsPageProps) {
       {/* Filter Section - Combined */}
       <Card className="mb-6 border-border/50">
         <CardContent className="px-4">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            {/* عنوان و آیکون */}
-            <div className="flex items-center gap-2 min-w-fit">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
               <div className="p-1.5 rounded-md bg-primary/10">
                 <Calendar className="w-4 h-4 text-primary" />
               </div>
               <span className="font-medium text-sm">فیلتر گزارش:</span>
             </div>
 
-            <div className="flex-1">
-              <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                <SelectTrigger className="h-9 bg-muted/30 border-border/50">
-                  <SelectValue placeholder="انتخاب ماه" />
-                </SelectTrigger>
-                <SelectContent>
-                  {months.map((month) => (
-                    <SelectItem key={month.value} value={month.value}>
-                      {month.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
+            <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+              <SelectTrigger className="h-9 bg-muted/30 border-border/50">
+                <SelectValue placeholder="انتخاب ماه" />
+              </SelectTrigger>
+              <SelectContent>
+                {months.map((month) => (
+                  <SelectItem key={month.value} value={month.value}>
+                    {month.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
